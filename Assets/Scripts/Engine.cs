@@ -56,7 +56,7 @@ public class Engine : MonoBehaviour
             needle.transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
         }
 
-        if (needle.transform.localEulerAngles.z < 240 && needle.transform.localEulerAngles.z > 210 && score <= maxScore)
+        if (needle.transform.localEulerAngles.z < 240 && needle.transform.localEulerAngles.z > 210 && score <= maxScore && !isGameOver)
         {
             score++;
             scoreText.text = "Score: " + score.ToString();
@@ -83,9 +83,13 @@ public class Engine : MonoBehaviour
         {
             starsMoveToScreen.CycleItemClick(2, "Code From Engine");
             starsSystem = true;
+            steamSoundEffect.Stop();
         }
 
-        steamSoundEffect.volume = Mathf.Lerp(steamSoundEffect.volume, targetAudioVolume, speedOfVolume * Time.deltaTime);
+        if (!starsSystem)
+        {
+            steamSoundEffect.volume = Mathf.Lerp(steamSoundEffect.volume, targetAudioVolume, speedOfVolume * Time.deltaTime);
+        }
     }
 
     public void PlayerRotate()

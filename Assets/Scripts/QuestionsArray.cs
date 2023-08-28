@@ -59,7 +59,11 @@ public class QuestionsArray : MonoBehaviour
 
     private bool[] answers = new bool[] { true, true, false, true, false };
     public TMP_Text questionText;
-    public TMP_Text answerText;
+    public TMP_Text answerText; 
+    public AudioSource correctSoundEffect;
+    public AudioSource wrongSoundEffect;
+    public AudioSource nextButtonSoundEffect;
+
     TMP_Text nextButtonText;
     public Button nextButton;
     public Button trueButton;
@@ -102,6 +106,8 @@ public class QuestionsArray : MonoBehaviour
 
     public void UpdateIndex()
     {
+        nextButtonSoundEffect.Play();
+
         if (currentIndex < 4 && !gameReady)
         {
             currentIndex++;
@@ -142,24 +148,30 @@ public class QuestionsArray : MonoBehaviour
             if (code == "8aea")
             {
                 answerText.text = answersHardInformationCorrect[currentIndex];
+                correctSoundEffect.Play();
                 score++;
             }
             else if (code == "8bjw")
             {
                 answerText.text = answersInformationCorrect[currentIndex];
+                correctSoundEffect.Play();
                 score++;
             }
+
         }
         else
         {
             if (code == "8aea")
             {
                 answerText.text = answersHardInformationWrong[currentIndex];
+                wrongSoundEffect.Play();
             }
             else if (code == "8bjw")
             {
                 answerText.text = answersInformationWrong[currentIndex];
+                wrongSoundEffect.Play();
             }
+
         }
 
         if (currentIndex == 4)
