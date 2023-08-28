@@ -9,11 +9,17 @@ public class HiddenItems : MonoBehaviour
     public Image[] hiddenItemsDisplay;
     public Button[] hiddenItemsButtons;
     public TMP_Text timerText;
-    public int remainingItems;
-    public int timer = 20;
-    public bool isGameFinished = false;
-    public int topTimerThreshold = 15;
-    public int minimumTimerThreshold = 5;
+    public GameObject itemFoundEffect;
+    public AudioSource itemFoundSoundEffect;
+
+
+    private int remainingItems;
+    private int timer = 20;
+    private bool isGameFinished = false;
+    private readonly int topTimerThreshold = 15;
+    private readonly int minimumTimerThreshold = 5;
+    private readonly float[] xAxisEffect = new float[] {-2f, -1.3f, -0.6f, 0.3f, 1.1f, 1.9f };
+    private readonly float yAxisEffect = 4.5f;
 
     public StarsMoveToScreen starsMoveToScreen;
     // Start is called before the first frame update
@@ -46,15 +52,18 @@ public class HiddenItems : MonoBehaviour
     {
         hiddenItemsDisplay[index].enabled = false;
         Destroy(hiddenItemsButtons[index].gameObject);
+        Vector3 currentItemLocationOnCamera = new Vector3(xAxisEffect[index], yAxisEffect, 0);
+        Instantiate(itemFoundEffect, currentItemLocationOnCamera, Quaternion.identity);
+        itemFoundSoundEffect.Play();
         remainingItems--;
     }
 
     private int CalculateTimer()
     {
-        if(timer >= 15)
+        if(timer >= topTimerThreshold)
         {
             return 3;
-        }else if(timer >=5 && timer < 15)
+        }else if(timer >=minimumTimerThreshold && timer < topTimerThreshold)
         {
             return 2;
         }
