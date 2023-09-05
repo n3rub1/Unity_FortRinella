@@ -20,13 +20,26 @@ public class HiddenItems : MonoBehaviour
     private readonly int minimumTimerThreshold = 5;
     private readonly float[] xAxisEffect = new float[] {-2f, -1.3f, -0.6f, 0.3f, 1.1f, 1.9f };
     private readonly float yAxisEffect = 4.5f;
+    private string code;
+    private int score;
+    private string playerDifficulty;
 
     public StarsMoveToScreen starsMoveToScreen;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine("CountdownTimer");
+        playerDifficulty = PlayerPrefs.GetString("code");
         remainingItems = hiddenItemsDisplay.Length;
+
+        if(playerDifficulty == "18aea")
+        {
+            timer = 20;
+        }
+        else if(playerDifficulty == "18bjw")
+        {
+            timer = 30;
+        }
     }
 
     // Update is called once per frame
@@ -43,7 +56,18 @@ public class HiddenItems : MonoBehaviour
         {
             StopCoroutine("CountdownTimer");
             isGameFinished = true;
-            starsMoveToScreen.CycleItemClick(CalculateTimer(), "Code_HI_Game");
+
+            score = CalculateTimer();
+            if(score >= 2)
+            {
+                code = "Code is: 9898";
+            }
+            else
+            {
+                code = "Code is: 9856";
+            }
+
+            starsMoveToScreen.CycleItemClick(score, code);
         }
 
     }

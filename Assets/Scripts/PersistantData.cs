@@ -7,15 +7,10 @@ using UnityEngine.SceneManagement;
 public class PersistantData : MonoBehaviour
 {
 
-    private string[] codes = new string[] { "8aea_EntranceGame", "8bjw_EntranceGame", "abcd_HiddenItems", "dcba_HiddenItems", "aaaa_SemaphoreGame", "bbbb_SemaphoreGame", "cccc_Engine","dddd_Engine", "eeee_Mixing", "ffff_Mixing" };
+    private string[] codes = new string[] { "8aea_EntranceGame", "8bjw_EntranceGame", "18aea_HiddenItems", "18bjw_HiddenItems", "24aea_SemaphoreGame", "24bjw_SemaphoreGame", "28aea_Engine","28bjw_Engine", "32aea_Mixing", "32bjw_Mixing", "37aea_Battleship", "37bjw_Battleship" };
     public TMP_InputField playerInput;
     public string test;
     public int reputation;
-
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -30,7 +25,6 @@ public class PersistantData : MonoBehaviour
         foreach(string code in codes)
         {
             string[] substring = code.Split('_');
-            Debug.Log(substring[0]);
             if(playerInput.text == substring[0])
             {
                 isOk = true;

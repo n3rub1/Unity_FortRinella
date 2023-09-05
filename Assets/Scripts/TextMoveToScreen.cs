@@ -70,10 +70,8 @@ public class TextMoveToScreen : MonoBehaviour
 
     public IEnumerator CycleItemEnumerator()
     {
-        Debug.Log("start");
         moveItem();
         yield return new WaitForSeconds(1f);
-        Debug.Log("finish");
         moveItem();
 
     }

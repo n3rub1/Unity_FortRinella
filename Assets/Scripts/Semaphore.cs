@@ -9,27 +9,48 @@ public class Semaphore : MonoBehaviour
     private bool firstSequence = true;
     private bool secondSequence = false;
     private bool thirdSequence = false;
-    private string[] semaphoreFlag = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "_" };
-    private int[] codeSequenceFirstPart = new int[] { 3, 4, 2, 14, 24, 26 };            //decoy + space
-    private int[] codeSequenceSecondPart = new int[] { 18, 16, 20, 0, 17, 4, 26 };      //square + space
-    private int[] codeSequenceThirdPart = new int[] { 24, 3 };                          //yd
+    private readonly string[] semaphoreFlag = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "_" };
+    private readonly int[] codeSequenceFirstPart = new int[] { 3, 4, 2, 14, 24, 26 };            //decoy + space
+    private readonly int[] codeSequenceSecondPart = new int[] { 18, 16, 20, 0, 17, 4, 26 };      //square + space
+    private readonly int[] codeSequenceThirdPart = new int[] { 24, 3 };                          //yd
     private int currentIndexToUpdatePlayersInputs = 0;
     private int maxEachSequence;
     private int startIndexForEachSequence = 0;
     private bool isPlayerTurn = false;
     private List<int> playersInputs;
     private int numberOfMistakes = 0;
+    private string code;
+    private int score;
+    private string playerDifficulty;
+    private int maxMistakeThreshold = 5;
+    private int minMistakeThreshold = 10;
 
     public Image[] alphabet;
     public float waitTime = 1f;
     public TMP_Text playerText;
     public TMP_Text startButtonText;
     public StarsMoveToScreen starsMoveToScreen;
+    public AudioSource flagSoundEffect;
+    public AudioSource buttonSoundEffect;
 
 
     private void Start()
     {
-        playersInputs = new List<int>(new int[codeSequenceFirstPart.Length + codeSequenceSecondPart.Length + codeSequenceThirdPart.Length]);    
+        playersInputs = new List<int>(new int[codeSequenceFirstPart.Length + codeSequenceSecondPart.Length + codeSequenceThirdPart.Length]);
+        playerDifficulty = PlayerPrefs.GetString("code");
+
+        if(playerDifficulty == "24aea")
+        {
+            SetOpacityBasedOnDifficulty(playerDifficulty);
+            maxMistakeThreshold = 5;
+            minMistakeThreshold = 10;
+        }
+        else if(playerDifficulty == "24bjw")
+        {
+            SetOpacityBasedOnDifficulty(playerDifficulty);
+            maxMistakeThreshold = 7;
+            minMistakeThreshold = 13;
+        }
     }
 
     public void StartGame()
@@ -38,12 +59,14 @@ public class Semaphore : MonoBehaviour
         startIndexForEachSequence = 0;
         if (firstSequence && !secondSequence)
         {
+            buttonSoundEffect.Play();
             currentIndexToUpdatePlayersInputs = 0;
             StartCoroutine(IterateWithDelay());
         }
 
         if (secondSequence && !thirdSequence)
         {
+            buttonSoundEffect.Play();
             firstSequence = false;
             currentIndexToUpdatePlayersInputs = codeSequenceFirstPart.Length;
             StartCoroutine(IterateWithDelay());
@@ -51,6 +74,7 @@ public class Semaphore : MonoBehaviour
 
         if (thirdSequence)
         {
+            buttonSoundEffect.Play();
             firstSequence = false;
             secondSequence = false;
             currentIndexToUpdatePlayersInputs = codeSequenceFirstPart.Length + codeSequenceSecondPart.Length;
@@ -60,7 +84,18 @@ public class Semaphore : MonoBehaviour
 
         if (!thirdSequence && !secondSequence && !firstSequence)
         {
-            starsMoveToScreen.CycleItemClick(CheckPlayersMistakes(), "Code_SF_Game" + "Mistakes: " + numberOfMistakes);
+            score = CheckPlayersMistakes();
+
+            if(score >= 2)
+            {
+                code = "Code is: 5212";
+            }
+            else
+            {
+                code = "Code is: 6658";
+            }
+
+            starsMoveToScreen.CycleItemClick(score, code);
         }
     }
 
@@ -124,11 +159,35 @@ public class Semaphore : MonoBehaviour
         {
             Color c = new Color32(110, 90, 68, 255);
             alphabet[index].color = c;
+            flagSoundEffect.Play();
         }
         else
         {
             Color c = Color.white;
             alphabet[index].color = c;
+        }
+    }
+
+    private void SetOpacityBasedOnDifficulty(string playerDifficulty)
+    {
+
+        int[] easy = new int[] { 1, 6, 7, 8, 10, 11, 12, 15, 19, 22, 23 };
+        int[] hard = new int[] { 1, 5, 7, 9, 12, 13, 21, 25 };
+        Color c = new Color32(110, 90, 68, 80);
+
+        if(playerDifficulty == "24aea")
+        {
+            foreach (int index in hard)
+            {
+                alphabet[index].color = c;
+            }
+        }
+        else
+        {
+            foreach(int index in easy)
+            {
+                alphabet[index].color = c;
+            }
         }
     }
 
@@ -140,6 +199,7 @@ public class Semaphore : MonoBehaviour
             playerText.text += semaphoreFlag[whichLetter];
             playersInputs[currentIndexToUpdatePlayersInputs] = whichLetter;
             currentIndexToUpdatePlayersInputs++;
+            flagSoundEffect.Play();
         }
 
     }
@@ -181,10 +241,10 @@ public class Semaphore : MonoBehaviour
 
     private int StarsCalculation(int numberOfMistakes)
     {
-        if(numberOfMistakes < 5)
+        if(numberOfMistakes < maxMistakeThreshold)
         {
             return 3;
-        }else if(numberOfMistakes >=5 && numberOfMistakes < 10)
+        }else if(numberOfMistakes >=maxMistakeThreshold && numberOfMistakes < minMistakeThreshold)
         {
             return 2;
         }

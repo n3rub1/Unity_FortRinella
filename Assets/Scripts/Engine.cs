@@ -16,8 +16,9 @@ public class Engine : MonoBehaviour
     public AudioSource clickSoundEffect;
 
 
-    public float rotationSpeed = 40;
+    public float rotationSpeed = 50;
     public int playerHandicap = 100;
+    public float score = 1;
 
     private readonly float startRotation = 320f;
     private readonly float maxZ = 37f;
@@ -30,8 +31,11 @@ public class Engine : MonoBehaviour
     private float lowAudioVolume = 0.05f;
     private float targetAudioVolume;
     private float speedOfVolume = 1f;
-
-    public float score = 1;
+    private string code;
+    private int finalScore;
+    private int topScoreThershold = 3800;
+    private int minScoreThershold = 2000;
+    private string playerDifficulty;
 
     private void Start()
     {
@@ -43,6 +47,20 @@ public class Engine : MonoBehaviour
         steamSoundEffect.loop = true;
         steamSoundEffect.volume = lowAudioVolume;
         steamSoundEffect.Play();
+        playerDifficulty = PlayerPrefs.GetString("code");
+
+        if(playerDifficulty == "28aea")
+        {
+            topScoreThershold = 5000;
+            minScoreThershold = 3000;
+            rotationSpeed = 80;
+        }
+        else if(playerDifficulty == "28bjw")
+        {
+            topScoreThershold = 3500;
+            minScoreThershold = 1500;
+            rotationSpeed = 40;
+        }
     }
     private void Update()
     {
@@ -81,7 +99,19 @@ public class Engine : MonoBehaviour
 
         if (isGameOver && !starsSystem)
         {
-            starsMoveToScreen.CycleItemClick(2, "Code From Engine");
+
+            finalScore = CalculateFinalScore();
+
+            if(finalScore >= 2)
+            {
+                code = "Code is: 8745";
+            }
+            else
+            {
+                code = "Code is: 2256";
+            }
+
+            starsMoveToScreen.CycleItemClick(finalScore, code);
             starsSystem = true;
             steamSoundEffect.Stop();
         }
@@ -109,6 +139,22 @@ public class Engine : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             timer--;
+        }
+    }
+
+    private int CalculateFinalScore()
+    {
+        if (score >= topScoreThershold)
+        {
+            return 3;
+        }
+        else if (score >= minScoreThershold && score < topScoreThershold)
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
         }
     }
 }
