@@ -16,7 +16,7 @@ public class Engine : MonoBehaviour
     public AudioSource clickSoundEffect;
 
 
-    public float rotationSpeed = 50;
+    public float rotationSpeed = 35;
     public int playerHandicap = 100;
     public float score = 1;
 
@@ -51,15 +51,13 @@ public class Engine : MonoBehaviour
 
         if(playerDifficulty == "28aea")
         {
-            topScoreThershold = 5000;
-            minScoreThershold = 3000;
-            rotationSpeed = 80;
+            topScoreThershold = 2000;
+            minScoreThershold = 1000;
         }
         else if(playerDifficulty == "28bjw")
         {
-            topScoreThershold = 3500;
-            minScoreThershold = 1500;
-            rotationSpeed = 40;
+            topScoreThershold = 1500;
+            minScoreThershold = 700;
         }
     }
     private void Update()

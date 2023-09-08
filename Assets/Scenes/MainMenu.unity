@@ -1802,11 +1802,10 @@ MonoBehaviour:
     used to purchase a souvenir from the shop.
 
 
-    Choose Level - Choose Level
-    - When following the narrative on Storyplaces, you will receive a code. Enter
-    this code in the ''Choose Level'' section, then play. Once a level is unlocked,
-    you can replay it any time, but note that the reputation points earned will not
-    change.
+    Choose Level - When following
+    the narrative on Storyplaces, you will receive a code. Enter this code in the
+    ''Choose Level'' section, then play. Once a level is unlocked, you can replay
+    it any time, but note that the reputation points earned will not change.
 
 '
   m_isRightToLeft: 0
