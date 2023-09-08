@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public class Battleship : MonoBehaviour
 {
     public Button[] pickMeButtons = new Button[] { };
+    public Button randomCardButton;
     public TMP_Text[] buttonGridText = new TMP_Text[] { };
     public TMP_Text aimingAtText;
     public TMP_Text timerText;
@@ -20,6 +21,12 @@ public class Battleship : MonoBehaviour
     public TMP_Text cardRightDescription;
     public TMP_Text shotsFiredText;
     public TMP_Text currentPositionText;
+    public TMP_Text targetHitText;
+    public AudioSource ramAudio;
+    public AudioSource moveAudio;
+    public AudioSource tiltAudio;
+    public AudioSource fireAudio;
+    public AudioSource pencilAudio;
 
     private readonly string target = "x";
     private readonly string clear = "";
@@ -28,7 +35,7 @@ public class Battleship : MonoBehaviour
     private readonly string[] gridBoxText = new string[] { "AX", "BX", "CX", "DX", "EX", "FX", "AY", "BY", "CY", "DY", "EY", "FY", "ZA", "ZB", "ZC", "ZD", "ZE", "ZF" };
     private readonly string[] correctFiringProcedureTitle = new string[] { "Rotate for loading_0", "Tilt Down_1", "Load_2", "Tilt Up_3", "Rotate Back for Firing_4", "Aim_5", "Fire_6" };
     private readonly string[] correctFiringProcedureDescription = new string[] { "Rotate the gun 90deg towards the loading chamber to start loading", "Tilt down the gun to wash out ambers and start loading", "Load the gun with gunpowder and shell", "Tilt the gun back up, gun is ready and loaded", "Rotate the gun back into position ready for aiming", "Aim at target", "Pull the fuse and fire the gun!" };
-    private readonly string[] currentGunPosition = new string[] {"Ready for Loading", "90deg angle", "Tilted down", "Loaded", "90 deg angle", "Facing the sea", "Facing Target"};
+    private readonly string[] currentGunPosition = new string[] { "Ready for Loading", "90deg angle", "Tilted down", "Loaded", "90 deg angle", "Facing the sea", "Facing Target" };
     private int[] indexArray;
     private int secondsPassed = 0;
     private int randomNumberLeft = 0;
@@ -46,7 +53,8 @@ public class Battleship : MonoBehaviour
     private int currentIndex;
     private int tempIndex;
     private int totalShotsFired = 0;
-    private string aimingAt;
+    private string aimingAt = "--";
+    private int targetHit = 0;
 
 
     private void Start()
@@ -59,11 +67,25 @@ public class Battleship : MonoBehaviour
     private void Update()
     {
         timerText.text = "Time: " + secondsPassed.ToString();
+
+        if (aimingAt == "--")
+        {
+            randomCardButton.enabled = false;
+            buttonColor = randomCardButton.image.color;
+            buttonColor.a = halfOpacity;
+            randomCardButton.image.color = buttonColor;
+        }
+        if(targetHit == 2)
+        {
+            Debug.Log("Game ready!");
+        }
     }
+
     public void HandleClick(int index)
     {
-        if (buttonGridText[index].text != shot)
+        if (buttonGridText[index].text != shot && buttonGridText[index].text != hit)
         {
+            pencilAudio.Play();
             indexArray = CheckGridIndex(index);
             UpdateAimingAtText(index);
             buttonGridText[indexArray[0]].text = target;
@@ -106,11 +128,13 @@ public class Battleship : MonoBehaviour
         {
             if (currentCardLeft == currentCorrectAnswer)
             {
+                PlayAudio(currentCorrectAnswer);
                 currentCorrectAnswer++;
                 cardLeft.color = greenCardColor;
 
                 if (currentCorrectAnswer == 7)
                 {
+                    PlayAudio(currentCorrectAnswer);
                     currentCorrectAnswer = 0;
                     UpdateNumberOfShotsFired();
                 }
@@ -124,11 +148,13 @@ public class Battleship : MonoBehaviour
         {
             if (currentCardRight == currentCorrectAnswer)
             {
+                PlayAudio(currentCorrectAnswer);
                 currentCorrectAnswer++;
                 cardRight.color = greenCardColor;
 
                 if (currentCorrectAnswer == 7)
                 {
+                    PlayAudio(currentCorrectAnswer);
                     currentCorrectAnswer = 0;
                     UpdateNumberOfShotsFired();
                 }
@@ -146,6 +172,58 @@ public class Battleship : MonoBehaviour
     private void UpdateGunPosition()
     {
         currentPositionText.text = "Gun position: " + currentGunPosition[currentCorrectAnswer];
+    }
+
+    private void UpdateNumberOfShotsFired()
+    {
+        totalShotsFired++;
+        shotsFiredText.text = "Shots Fired: " + totalShotsFired.ToString();
+        int index = Array.IndexOf(gridBoxText, aimingAt);
+
+        if (index == 9 || index == 10)
+        {
+            buttonGridText[index].text = hit;
+            targetHit++;
+            targetHitText.text = "Target Hit: " + targetHit + "/2";
+        }
+        else
+        {
+            buttonGridText[index].text = shot;
+        }
+
+        ResetValues();
+    }
+
+    private void ResetValues()
+    {
+        currentCorrectAnswer = 0;
+        previousIndex = 99;
+        aimingAt = "--";
+        aimingAtText.text = "Aiming at: " + aimingAt;
+    }
+
+    private void PlayAudio(int index)
+    {
+        if(index == 0 || index == 4)
+        {
+            moveAudio.Play();
+        }
+
+        if(index == 1 || index == 3 || index == 5)
+        {
+            tiltAudio.Play();
+        }
+
+        if(index == 2)
+        {
+            ramAudio.Play();
+        }
+
+        if(index == 6)
+        {
+            fireAudio.Play();
+        }
+
     }
 
     private void UpdateButtonOpacity(bool isEnabled, float opactiy)
@@ -169,16 +247,11 @@ public class Battleship : MonoBehaviour
     {
         aimingAt = gridBoxText[index];
         aimingAtText.text = "Aiming at: " + aimingAt;
-    }
+        randomCardButton.enabled = true;
 
-    private void UpdateNumberOfShotsFired()
-    {
-        totalShotsFired++;
-        currentCorrectAnswer = 0;
-        shotsFiredText.text = "Shots Fired: " + totalShotsFired.ToString();
-        int index = Array.IndexOf(gridBoxText, aimingAt);
-
-        buttonGridText[index].text = shot;
+        buttonColor = randomCardButton.image.color;
+        buttonColor.a = fullOpacity;
+        randomCardButton.image.color = buttonColor;
     }
 
     public void ChangeCardTitleAndDescription()

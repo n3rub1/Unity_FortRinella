@@ -1419,13 +1419,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game Designer: Robert Gatt -- Music Artist: Patrick Gatt -- Sound Effects:
-    zembacraftworks (freesound.org), ReWired (freesound.org), cabled_mess (freesound.org),
-    juskiddink (freesound.org), unadamlar (freesound.org), The_Sean_ (freesound.org)
-    -- Visual Effects: JMO Assets (Unity Store) -- Visual Art: Fantasy Wooden GUI
-    (Unity Store) -- Photos and other art: Robert Gatt, Fort Rinella (facebook),
-    flag (colonialsoldier.com), gauge (danajtharpauctions.com), powder flask (easyliveauction.com),
-    lantern (englishsalvage.co.uk), cartridges (https://commons.wikimedia.orgwikiFile577_450_Martini-Henry_by_the_years),
+  m_text: 'Game Designer: Robert Gatt -- Special Thanks To: Claudia Villani, Patrick
+    Gatt -- Music Artist: Patrick Gatt -- Sound Effects: zembacraftworks (freesound.org),
+    f4ngy (freesound.org), ReWired (freesound.org), jakobhandersen (freesound.org),
+    cabled_mess (freesound.org), juskiddink (freesound.org), unadamlar (freesound.org),
+    The_Sean_ (freesound.org), F.M.Audio (freesound.org), Garuda1982 (freesound.org),
+    Mrthenoronha (freesound.org), derplayer (freesound.org)   -- Visual Effects:
+    JMO Assets (Unity Store) -- Visual Art: Fantasy Wooden GUI (Unity Store) -- Photos
+    and other art: Robert Gatt, Fort Rinella (facebook), flag (colonialsoldier.com),
+    gauge (danajtharpauctions.com), powder flask (easyliveauction.com), lantern (englishsalvage.co.uk),
+    cartridges (https://commons.wikimedia.orgwikiFile577_450_Martini-Henry_by_the_years),
     badges (regimentalbadges.com), Martini Henry (svarkrutt.net)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86c104a3335c8814d998cf6fa397b2d2, type: 2}
