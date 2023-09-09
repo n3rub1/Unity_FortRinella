@@ -59,7 +59,7 @@ public class QuestionsArray : MonoBehaviour
 
     private bool[] answers = new bool[] { true, true, false, true, false };
     public TMP_Text questionText;
-    public TMP_Text answerText; 
+    public TMP_Text answerText;
     public AudioSource correctSoundEffect;
     public AudioSource wrongSoundEffect;
     public AudioSource nextButtonSoundEffect;
@@ -119,11 +119,18 @@ public class QuestionsArray : MonoBehaviour
         if (gameReady)
         {
             currentIndex = 5;
-            if(score == 5)
+            if (score == 5)
             {
                 questions[5] = "3241";
                 questionsHard[5] = "3241";
                 nextButton.interactable = false;
+
+                if (code == "8aea")
+                {
+                    ReputationStatic.SetReputationForEngineGame(3);
+                    ReputationStatic.SetEngineGameToTrue();
+                }
+
             }
             else
             {
@@ -186,9 +193,9 @@ public class QuestionsArray : MonoBehaviour
             nextButton.interactable = true;
         }
 
-        if(currentIndex == 5)
+        if (currentIndex == 5)
         {
-            answerText.text = ""; 
+            answerText.text = "";
         }
 
         trueButton.interactable = false;

@@ -27,6 +27,7 @@ public class Battleship : MonoBehaviour
     public AudioSource tiltAudio;
     public AudioSource fireAudio;
     public AudioSource pencilAudio;
+    public StarsMoveToScreen starsMoveToScreen;
 
     private readonly string target = "x";
     private readonly string clear = "";
@@ -55,6 +56,9 @@ public class Battleship : MonoBehaviour
     private int totalShotsFired = 0;
     private string aimingAt = "--";
     private int targetHit = 0;
+    private bool isGameReady = false;
+    private int topTimerThershold = 60;
+    private int minTimerThershold = 10;
 
 
     private void Start()
@@ -75,9 +79,10 @@ public class Battleship : MonoBehaviour
             buttonColor.a = halfOpacity;
             randomCardButton.image.color = buttonColor;
         }
-        if(targetHit == 2)
+        if(targetHit == 2 && isGameReady)
         {
-            Debug.Log("Game ready!");
+            starsMoveToScreen.CycleItemClick(CalculateFinalScore(), "No Code For This Game");
+            isGameReady = false;
         }
     }
 
@@ -192,6 +197,11 @@ public class Battleship : MonoBehaviour
         }
 
         ResetValues();
+
+        if(totalShotsFired == 2)
+        {
+            isGameReady = true;
+        }
     }
 
     private void ResetValues()
@@ -276,6 +286,28 @@ public class Battleship : MonoBehaviour
         cardRightDescription.text = correctFiringProcedureDescription[randomNumberRight];
 
         UpdateButtonOpacity(true, fullOpacity);
+    }
+
+    private int CalculateFinalScore()
+    {
+        if (secondsPassed >= topTimerThershold)
+        {
+            ReputationStatic.SetReputationForBattleshipGame(0);
+            ReputationStatic.SetBattleshipGameToTrue();
+            return 1;
+        }
+        else if (secondsPassed >= minTimerThershold && secondsPassed < topTimerThershold)
+        {
+            ReputationStatic.SetReputationForBattleshipGame(2);
+            ReputationStatic.SetBattleshipGameToTrue();
+            return 2;
+        }
+        else
+        {
+            ReputationStatic.SetReputationForBattleshipGame(5);
+            ReputationStatic.SetBattleshipGameToTrue();
+            return 3;
+        }
     }
 
     IEnumerator IncreaseTimer()

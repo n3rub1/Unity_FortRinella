@@ -144,14 +144,20 @@ public class Engine : MonoBehaviour
     {
         if (score >= topScoreThershold)
         {
+            ReputationStatic.SetReputationForEngineGame(5);
+            ReputationStatic.SetEngineGameToTrue();
             return 3;
         }
         else if (score >= minScoreThershold && score < topScoreThershold)
         {
+            ReputationStatic.SetReputationForEngineGame(2);
+            ReputationStatic.SetEngineGameToTrue();
             return 2;
         }
         else
         {
+            ReputationStatic.SetReputationForEngineGame(0);
+            ReputationStatic.SetEngineGameToTrue();
             return 1;
         }
     }

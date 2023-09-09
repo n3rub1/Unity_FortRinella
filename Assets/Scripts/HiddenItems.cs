@@ -86,13 +86,19 @@ public class HiddenItems : MonoBehaviour
     {
         if(timer >= topTimerThreshold)
         {
+            ReputationStatic.SetReputationForHiddenItemsGame(5);
+            ReputationStatic.SetHiddenItemsGameToTrue();
             return 3;
         }else if(timer >=minimumTimerThreshold && timer < topTimerThreshold)
         {
+            ReputationStatic.SetReputationForHiddenItemsGame(2);
+            ReputationStatic.SetHiddenItemsGameToTrue();
             return 2;
         }
         else
         {
+            ReputationStatic.SetReputationForHiddenItemsGame(0);
+            ReputationStatic.SetHiddenItemsGameToTrue();
             return 1;
         }
     }

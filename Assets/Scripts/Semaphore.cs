@@ -243,13 +243,19 @@ public class Semaphore : MonoBehaviour
     {
         if(numberOfMistakes < maxMistakeThreshold)
         {
+            ReputationStatic.SetReputationForSemaphoreGame(5);
+            ReputationStatic.SetSemaphoreGameToTrue();
             return 3;
         }else if(numberOfMistakes >=maxMistakeThreshold && numberOfMistakes < minMistakeThreshold)
         {
+            ReputationStatic.SetReputationForSemaphoreGame(2);
+            ReputationStatic.SetSemaphoreGameToTrue();
             return 2;
         }
         else
         {
+            ReputationStatic.SetReputationForSemaphoreGame(0);
+            ReputationStatic.SetSemaphoreGameToTrue();
             return 1;
         }
     }
