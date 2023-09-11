@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PersistantData : MonoBehaviour
 {
 
-    private string[] codes = new string[] { "8aea_EntranceGame", "8bjw_EntranceGame", "18aea_HiddenItems", "18bjw_HiddenItems", "24aea_SemaphoreGame", "24bjw_SemaphoreGame", "28aea_Engine","28bjw_Engine", "32aea_Mixing", "32bjw_Mixing", "37aea_Battleship", "37bjw_Battleship" };
+    private string[] codes = new string[] { "8aea_EntranceGame", "8bjw_EntranceGame", "18aea_HiddenItems", "18bjw_HiddenItems", "24aea_SemaphoreGame", "24bjw_SemaphoreGame", "28aea_Engine","28bjw_Engine", "32aea_Mixing", "32bjw_Mixing", "37aea_Battleship", "37bjw_Battleship", "38aea_Battleship", "38bjw_Battleship" };
     public TMP_InputField playerInput;
     public string test;
     public int reputation;

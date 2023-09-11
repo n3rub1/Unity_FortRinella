@@ -127,8 +127,8 @@ public class QuestionsArray : MonoBehaviour
 
                 if (code == "8aea")
                 {
-                    ReputationStatic.SetReputationForEngineGame(3);
-                    ReputationStatic.SetEngineGameToTrue();
+                    ReputationStatic.SetReputationForEntranceGame(3);
+                    ReputationStatic.SetEntranceGameToTrue();
                 }
 
             }

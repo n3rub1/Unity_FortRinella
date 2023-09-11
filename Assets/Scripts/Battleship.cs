@@ -57,8 +57,11 @@ public class Battleship : MonoBehaviour
     private string aimingAt = "--";
     private int targetHit = 0;
     private bool isGameReady = false;
-    private int topTimerThershold = 60;
-    private int minTimerThershold = 10;
+    private int topTimerThershold = 180;
+    private int minTimerThershold = 60;
+    private string playerDifficulty;
+    private int hitBox1 = 9;
+    private int hitBox2 = 10;
 
 
     private void Start()
@@ -66,6 +69,38 @@ public class Battleship : MonoBehaviour
         indexArray = new int[3];
         StartCoroutine(IncreaseTimer());
         currentPositionText.text = "Gun position: " + currentGunPosition[0];
+        playerDifficulty = PlayerPrefs.GetString("code");
+
+        if (playerDifficulty == "37aea")
+        {
+            topTimerThershold = 180;
+            minTimerThershold = 60;
+            hitBox1 = 9;
+            hitBox2 = 10;
+        }
+        else if (playerDifficulty == "37bjw")
+        {
+            topTimerThershold = 210;
+            minTimerThershold = 70;
+            hitBox1 = 9;
+            hitBox2 = 10;
+        }
+
+        if (playerDifficulty == "38aea")
+        {
+            topTimerThershold = 180;
+            minTimerThershold = 60;
+            hitBox1 = 1;
+            hitBox2 = 7;
+        }
+        else if (playerDifficulty == "38bjw")
+        {
+            topTimerThershold = 210;
+            minTimerThershold = 70;
+            hitBox1 = 1;
+            hitBox2 = 7;
+        }
+
     }
 
     private void Update()
@@ -185,7 +220,9 @@ public class Battleship : MonoBehaviour
         shotsFiredText.text = "Shots Fired: " + totalShotsFired.ToString();
         int index = Array.IndexOf(gridBoxText, aimingAt);
 
-        if (index == 9 || index == 10)
+        Debug.Log(hitBox1);
+
+        if (index == hitBox1 || index == hitBox2)
         {
             buttonGridText[index].text = hit;
             targetHit++;

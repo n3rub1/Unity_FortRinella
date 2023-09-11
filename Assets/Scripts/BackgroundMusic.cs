@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BackgroundMusic : MonoBehaviour
 {
     public static BackgroundMusic instance;
     public AudioSource backgroundMusic;
+    private string battleShipScene = "Battleship";
 
-    void Awake()
+
+    private void Awake()
     {
         if (instance == null)
         {
@@ -20,10 +23,24 @@ public class BackgroundMusic : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Start()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        backgroundMusic.Play();
+        if (scene.name == battleShipScene && backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Stop();
+        }
+        else if (scene.name != battleShipScene && !backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Play();
+        }
+    }
+
+    // Optional: If you want to unsubscribe from the event when the object is destroyed.
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

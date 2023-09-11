@@ -23,7 +23,6 @@ public static class ReputationStatic
         if (!isEntranceGameReady)
         {
             reputation = reputation + reputationPoints;
-            Debug.Log(GetReputation());
         }
     }
 
